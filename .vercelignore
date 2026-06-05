@@ -1,5 +1,5 @@
 .cache
 uploads
 Haven App.html
-*.jsx
-styles.css
+/*.jsx
+/styles.css
