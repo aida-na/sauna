@@ -15,12 +15,12 @@ export function ScreenHome({ app }) {
       </div>
 
       {/* tonight's ritual */}
-      <div className="hero fade-up d1" style={{ padding: '26px 24px 24px', marginBottom: 16, cursor: 'pointer' }} onClick={() => app.go('weekly')}>
+      <div className="hero fade-up d1" style={{ padding: '26px 24px 24px', marginBottom: 16, cursor: 'pointer' }} onClick={() => app.go('ritual')}>
         <div className="t-label" style={{ color: 'var(--wood)', marginBottom: 16 }}>Tonight</div>
-        <div className="t-display" style={{ marginBottom: 20 }}>Recovery</div>
+        <div className="t-display" style={{ marginBottom: 20 }}>{app.goal}</div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div className="tnum" style={{ fontSize: 15, fontWeight: 600, color: 'var(--t2)' }}>
-            20 min &nbsp;·&nbsp; 3 rounds
+            {app.duration} min &nbsp;·&nbsp; {app.rounds} rounds
           </div>
           <Icon name="arrow-right" size={20} style={{ color: 'var(--accent)' }} />
         </div>

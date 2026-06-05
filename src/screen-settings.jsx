@@ -1,6 +1,8 @@
 // screen-settings.jsx — Settings
+import { useState } from 'react';
 import { Icon, Wordmark } from './icons.jsx';
 import { Toggle } from './ui.jsx';
+import { ProfilePanel, DevicePanel, SourcePanel, TempUnitPanel } from './settings-panels.jsx';
 
 function SettingRow({ icon, title, detail, control, last, onClick, color }) {
   return (
@@ -19,6 +21,15 @@ function SettingRow({ icon, title, detail, control, last, onClick, color }) {
 }
 
 export function ScreenSettings({ app }) {
+  const [panel, setPanel] = useState(null);
+
+  if (panel === 'profile') return <ProfilePanel onClose={() => setPanel(null)} />;
+  if (panel === 'device') return <DevicePanel app={app} onClose={() => setPanel(null)} />;
+  if (panel === 'apple') return <SourcePanel id="apple" onClose={() => setPanel(null)} />;
+  if (panel === 'garmin') return <SourcePanel id="garmin" onClose={() => setPanel(null)} />;
+  if (panel === 'whoop') return <SourcePanel id="whoop" onClose={() => setPanel(null)} />;
+  if (panel === 'tempUnit') return <TempUnitPanel app={app} onClose={() => setPanel(null)} />;
+
   return (
     <div className="tab-scroll">
       <div className="fade-up" style={{ marginBottom: 22 }}>
@@ -26,8 +37,8 @@ export function ScreenSettings({ app }) {
         <div className="t-h1">Settings</div>
       </div>
 
-      {/* profile */}
-      <div className="card card-pad fade-up d1" style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 18 }}>
+      <div className="card card-pad fade-up d1" style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 18, cursor: 'pointer' }}
+        onClick={() => setPanel('profile')}>
         <div style={{ width: 56, height: 56, borderRadius: 999, background: 'linear-gradient(150deg, var(--wood-2), var(--accent-dim))',
           display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#1a0f08', fontSize: 22, fontWeight: 700 }}>A</div>
         <div style={{ flex: 1 }}>
@@ -37,28 +48,29 @@ export function ScreenSettings({ app }) {
         <Icon name="chevron-right" size={20} style={{ color: 'var(--t3)' }} />
       </div>
 
-      {/* device */}
       <div className="t-label fade-up d2" style={{ margin: '0 4px 10px' }}>Sauna</div>
       <div className="card fade-up d2" style={{ marginBottom: 18, overflow: 'hidden' }}>
-        <SettingRow icon="home" title="Living Room" detail="Connected" color="var(--accent)" onClick={() => {}} />
-        <SettingRow icon="bolt" title="Battery" detail="92%" />
+        <SettingRow icon="home" title="Living Room" detail="Connected" color="var(--accent)" onClick={() => setPanel('device')} />
+        <SettingRow icon="bolt" title="Battery" detail="92%" onClick={() => setPanel('device')} />
         <SettingRow icon="shield" title="Safety lock" control={<Toggle on={app.safetyLock} onChange={(v) => app.set({ safetyLock: v })} />} last />
       </div>
 
-      {/* sources */}
       <div className="t-label fade-up d3" style={{ margin: '0 4px 10px' }}>Connected sources</div>
       <div className="card fade-up d3" style={{ marginBottom: 18, overflow: 'hidden' }}>
-        <SettingRow icon="heart" title="Apple Health" detail="Syncing" color="var(--accent)" onClick={() => {}} />
-        <SettingRow icon="pulse" title="Garmin" detail="Syncing" color="var(--accent)" onClick={() => {}} />
-        <SettingRow icon="gauge" title="Whoop" detail="Syncing" color="var(--accent)" onClick={() => {}} last />
+        <SettingRow icon="heart" title="Apple Health" detail="Syncing" color="var(--accent)" onClick={() => setPanel('apple')} />
+        <SettingRow icon="pulse" title="Garmin" detail="Syncing" color="var(--accent)" onClick={() => setPanel('garmin')} />
+        <SettingRow icon="gauge" title="Whoop" detail="Syncing" color="var(--accent)" onClick={() => setPanel('whoop')} last />
       </div>
 
-      {/* prefs */}
       <div className="t-label fade-up d4" style={{ margin: '0 4px 10px' }}>Preferences</div>
       <div className="card fade-up d4" style={{ marginBottom: 18, overflow: 'hidden' }}>
-        <SettingRow icon="flame" title="Temperature unit" detail="°F" onClick={() => {}} />
-        <SettingRow icon="bell" title="Session reminders" control={<Toggle on={true} onChange={() => {}} />} />
-        <SettingRow icon="moon" title="Wind-down nudges" control={<Toggle on={true} onChange={() => {}} />} last />
+        <SettingRow icon="flame" title="Temperature unit" detail={`°${app.tempUnit}`} onClick={() => setPanel('tempUnit')} />
+        <SettingRow icon="bell" title="Session reminders" control={
+          <Toggle on={app.reminders} onChange={(v) => app.set({ reminders: v })} />
+        } />
+        <SettingRow icon="moon" title="Wind-down nudges" control={
+          <Toggle on={app.windDown} onChange={(v) => app.set({ windDown: v })} />
+        } last />
       </div>
 
       <div className="fade-up d5" style={{ textAlign: 'center', padding: '8px 0 4px' }}>

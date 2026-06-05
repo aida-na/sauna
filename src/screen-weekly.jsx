@@ -9,8 +9,13 @@ export function ScreenWeekly({ app }) {
     { d: 'W', date: 6, on: true }, { d: 'T', date: 7, on: false },
     { d: 'F', date: 8, on: true }, { d: 'S', date: 9, on: false }, { d: 'S', date: 10, on: true },
   ];
+  const useProtocol = (s) => {
+    app.applyProtocol({ goal: s.goal, duration: s.dur, rounds: s.rounds, target: s.temp });
+    app.openControl();
+  };
+
   const sessions = [
-    { id: 'tue', day: 'Tonight', goal: 'Recovery', dur: 20, temp: 200, rounds: 3,
+    { id: 'tue', day: 'Tonight', goal: app.goal, dur: app.duration, temp: app.target, rounds: app.rounds,
       why: 'You logged 68 min of high-intensity training this week. This protocol supports faster overnight recovery.' },
     { id: 'wed', day: 'Wednesday', goal: 'Performance', dur: 25, temp: 210, rounds: 2,
       why: 'A hotter heat-adaptation block ahead of your weekend long run.' },
@@ -76,11 +81,9 @@ export function ScreenWeekly({ app }) {
                     <Icon name="sparkle" size={15} style={{ color: 'var(--accent)', flexShrink: 0, marginTop: 14 }} />
                     <div className="t-sm" style={{ color: 'var(--t1)', lineHeight: 1.5, marginTop: 10 }}>{s.why}</div>
                   </div>
-                  {s.id === 'tue' && (
-                    <button className="btn btn-primary btn-block btn-sm" style={{ marginTop: 14 }} onClick={app.openControl}>
-                      <Icon name="play" size={16} /> Start tonight's session
-                    </button>
-                  )}
+                  <button className="btn btn-primary btn-block btn-sm" style={{ marginTop: 14 }} onClick={() => useProtocol(s)}>
+                    <Icon name="play" size={16} /> {s.id === 'tue' ? "Start tonight's session" : 'Use this protocol'}
+                  </button>
                 </div>
               </div>
             </div>

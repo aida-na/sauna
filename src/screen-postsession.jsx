@@ -4,9 +4,9 @@ import { Delta } from './ui.jsx';
 
 export function ScreenPost({ app }) {
   const bio = [
-    { label: 'HRV', before: 48, after: 55, unit: 'ms', delta: '+14%', dir: 'up', good: true },
-    { label: 'Resting HR', before: 62, after: 58, unit: 'bpm', delta: '−4', dir: 'down', good: true },
-    { label: 'Stress', before: 64, after: 41, unit: '', delta: '−23', dir: 'down', good: true },
+    { label: 'HRV', before: 52, after: 54, unit: 'ms', delta: '+4%', dir: 'up' },
+    { label: 'Resting HR', before: 59, after: 58, unit: 'bpm', delta: '−1', dir: 'down' },
+    { label: 'Stress', before: 58, after: 52, unit: '', delta: '−6', dir: 'down' },
   ];
   return (
     <div className="overlay">
@@ -18,14 +18,14 @@ export function ScreenPost({ app }) {
             display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <Sunset size={30} color="var(--accent)" />
           </div>
-          <div className="t-label" style={{ color: 'var(--wood)', marginBottom: 10 }}>Recovery Session · Complete</div>
+          <div className="t-label" style={{ color: 'var(--wood)', marginBottom: 10 }}>{app.goal} Session · Complete</div>
           <div className="t-display">Well done,<br />Alex</div>
         </div>
 
         {/* summary */}
         <div className="card card-pad fade-up d1" style={{ marginBottom: 14 }}>
           <div style={{ display: 'flex' }}>
-            {[['Duration', '41', 'min'], ['Max Temp', '204', '°F'], ['Rounds', '3', '/3']].map(([k, v, u], j) => (
+            {[['Duration', String(app.duration), 'min'], ['Max Temp', String(app.target), '°F'], ['Rounds', String(app.rounds), `/${app.rounds}`]].map(([k, v, u], j) => (
               <div key={k} style={{ flex: 1, textAlign: 'center', borderLeft: j ? '0.5px solid var(--hair)' : 'none' }}>
                 <div className="t-label" style={{ marginBottom: 7 }}>{k}</div>
                 <div className="t-h1 tnum">{v}<span className="unit">{u}</span></div>
@@ -41,7 +41,7 @@ export function ScreenPost({ app }) {
             <div>
               <div className="t-label" style={{ color: 'var(--wood)', marginBottom: 8 }}>Biometric impact</div>
               <div className="t-h2" style={{ lineHeight: 1.25, fontWeight: 600 }}>
-                Your HRV improved <span className="accent">14%</span> after today's session — your strongest recovery response this week.
+                HRV ticked up <span className="accent">4%</span> overnight — a modest signal, in line with your recent average.
               </div>
             </div>
           </div>

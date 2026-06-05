@@ -22,6 +22,10 @@ function HavenApp() {
     duration: 20,
     rounds: 3,
     goal: 'Recovery',
+    frequency: 4,
+    tempUnit: 'F',
+    reminders: true,
+    windDown: true,
     session: { active: false, paused: false, round: 1, roundTotal: 3, secondsLeft: 1200, roundDuration: 1200 },
   });
   const stRef = useRef(st);
@@ -68,7 +72,21 @@ function HavenApp() {
     closeControl: () => set({ overlay: null }),
     openSetup: () => set({ overlay: 'setup' }),
     closeSetup: () => set({ overlay: null }),
-    buildRitual: () => set({ overlay: null, tab: 'ritual' }),
+    applyProtocol: ({ goal, duration, rounds, target }) => set({
+      ...(goal != null && { goal }),
+      ...(duration != null && { duration }),
+      ...(rounds != null && { rounds }),
+      ...(target != null && { target }),
+    }),
+    buildRitual: (plan) => set({
+      overlay: null,
+      tab: 'ritual',
+      ...(plan?.goal != null && { goal: plan.goal }),
+      ...(plan?.duration != null && { duration: plan.duration }),
+      ...(plan?.rounds != null && { rounds: plan.rounds }),
+      ...(plan?.target != null && { target: plan.target }),
+      ...(plan?.frequency != null && { frequency: plan.frequency }),
+    }),
     startSession: () => set({
       overlay: 'active',
       session: { active: true, paused: false, round: 1, roundTotal: st.rounds, secondsLeft: st.duration * 60, roundDuration: st.duration * 60 },
